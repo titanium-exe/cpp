@@ -4,6 +4,7 @@
 struct Node{
 	int data;
 	struct Node* next;
+	int elementcount;
 };
 
 struct Node* head;// global variable
@@ -16,6 +17,7 @@ void insert_end(int x){
 	newNode->next = NULL;
 	if (head == NULL){	
 		head = newNode;
+		newNode->elementcount++;
 	}
 	else{
 		struct Node* temp;
@@ -26,11 +28,49 @@ void insert_end(int x){
 		}
 
 		temp->next = newNode;
+		newNode->elementcount++;
 	}
 }
 
 void insert_begining(int x){
-	
+	// edge cases
+	// 1) when list is empty 
+	if(head == NULL){
+		insert_end(x);
+		return;
+	}else{
+		struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+		newNode->data = x;
+		newNode->next = head;
+		head = newNode;
+		newNode->elementcount++;
+	}
+}
+
+void insert_kth(int x, int k){
+	int counter = 0;
+	struct Node* temp = head;
+	if(head == NULL){
+		insert_end(x);
+		return;
+	}
+	if(head->elementcount < k){
+		insert_end(x);
+		return;
+	}
+	while(counter < k-2){
+		temp = temp->next;
+		counter++;
+
+	}
+
+	struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+        
+	newNode->data = x;
+	newNode->next = temp->next;
+	temp->next = newNode;
+	newNode->elementcount++;
+	return;
 }
 
 void print_list(){
@@ -50,11 +90,10 @@ int main(){
 	for(i =0; i < n; i++){
 		printf("enter the number: \n");
 		scanf("%d", &x);
-		insert_end(x);
+		insert_begining(x);
 		print_list();		
 	}
-
-	
+		
 }
 
 
